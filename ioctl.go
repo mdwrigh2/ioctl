@@ -6,38 +6,38 @@ import (
 )
 
 const (
-	_IOC_NONE  = 0
-	_IOC_WRITE = 1
-	_IOC_READ  = 2
+	IOC_NONE  = 0
+	IOC_WRITE = 1
+	IOC_READ  = 2
 
-	_IOC_NRBITS   = 8
-	_IOC_TYPEBITS = 8
-	_IOC_SIZEBITS = 14
-	_IOC_DIRBITS  = 2
+	IOC_NRBITS   = 8
+	IOC_TYPEBITS = 8
+	IOC_SIZEBITS = 14
+	IOC_DIRBITS  = 2
 
-	_IOC_NRSHIFT   = 0
-	_IOC_TYPESHIFT = _IOC_NRSHIFT + _IOC_NRBITS
-	_IOC_SIZESHIFT = _IOC_TYPESHIFT + _IOC_TYPEBITS
-	_IOC_DIRSHIFT  = _IOC_SIZESHIFT + _IOC_SIZEBITS
+	IOC_NRSHIFT   = 0
+	IOC_TYPESHIFT = IOC_NRSHIFT + IOC_NRBITS
+	IOC_SIZESHIFT = IOC_TYPESHIFT + IOC_TYPEBITS
+	IOC_DIRSHIFT  = IOC_SIZESHIFT + IOC_SIZEBITS
 )
 
-func _IOC(dir, t, nr int, size uintptr) int {
-	return (dir << _IOC_DIRSHIFT) |
-		(t << _IOC_TYPESHIFT) |
-		(nr << _IOC_NRSHIFT) |
-		(int(size) << _IOC_SIZESHIFT)
+func IOC(dir, t, nr int, size uintptr) int {
+	return (dir << IOC_DIRSHIFT) |
+		(t << IOC_TYPESHIFT) |
+		(nr << IOC_NRSHIFT) |
+		(int(size) << IOC_SIZESHIFT)
 }
 
-func _IO(t, nr int) int {
-	return _IOC(_IOC_NONE, t, nr, uintptr(0))
+func IO(t, nr int) int {
+	return IOC(IOC_NONE, t, nr, uintptr(0))
 }
 
-func _IOR(t, nr int, size uintptr) int {
-	return _IOC(_IOC_READ, t, nr, size)
+func IOR(t, nr int, size uintptr) int {
+	return IOC(IOC_READ, t, nr, size)
 }
 
-func _IOW(t, nr int, size uintptr) int {
-	return _IOC(_IOC_WRITE, t, nr, size)
+func IOW(t, nr int, size uintptr) int {
+	return IOC(IOC_WRITE, t, nr, size)
 }
 
 func Ioctl(fd uintptr, req int, data unsafe.Pointer) (err syscall.Errno) {
